@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block script %}
+
+<script src="https://maps.googleapis.com/maps/api/js?v=3&key= AIzaSyCMrri_BsW4wZ7dmt81SLl5gypDuo3p44c&sensor=true"></script>
+<script src="https://maps.googleapis.com/maps/api/js?v=3&sensor=false"></script>
+<script>
+	if (navigator.geolocation) { //Checks if browser supports geolocation
+  	 navigator.geolocation.getCurrentPosition(function (location) {                                                          
+     var latitude_user = location.coords.latitude;                    //This gets the latitude of user
+     var longitude_user = location.coords.longitude;                 //This gets the longitude of user
+     var coords = new google.maps.LatLng(latitude_user, longitude_user); //Creates variable for map coordinates
+     
+     var lat_venue={{ details.0 }}
+     var lng_venue={{ details.1 }}
+     var coords_venue = new google.maps.LatLng(lat_venue, lng_venue);
+     
+     var directionsService = new google.maps.DirectionsService();
+     var directionsDisplay = new google.maps.DirectionsRenderer();
+     var mapOptions = //Sets map options
+     {
+       zoom: 16,  //Sets zoom level (0-21)
+       center: coords, //zoom in on users location
+       mapTypeControl: true, //allows you to select map type eg. map or satellite
+       navigationControlOptions:
+       {
+         style: google.maps.NavigationControlStyle.SMALL //sets map controls size eg. zoom
+       },
+       mapTypeId: google.maps.MapTypeId.ROADMAP //sets type of map Options:ROADMAP, SATELLITE, HYBRID, TERRIAN
+     };
+     
+     map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions); /*Creates a new map using the passed optional parameters in the mapOptions parameter.*/
+
+     directionsDisplay.setMap(map);
+     directionsDisplay.setPanel(document.getElementById('panel'));
+     var request = {
+       origin: coords,
+       destination: coords_venue,
+       travelMode: google.maps.DirectionsTravelMode.DRIVING
+     };
+
+     directionsService.route(request, function (response, status) {
+       if (status == google.maps.DirectionsStatus.OK) {
+         directionsDisplay.setDirections(response);
+       }
+     });
+    });
+ }
+
+</script>
+
+
+{% endblock %}
+
+
+{% block styles %}
+
+#map-canvas {
+margin: 0;
+padding: 0;
+height: 500px;
+}
+
+{% endblock %}
+
+
+{% block content %}
+<div class='row'>
+<div class='col-lg-6'>
+<h3>{{ location }}</h3>
+
+<p></p>
+<p><strong>Phone Number:</strong> {{ details.3 }}</p>
+<p><strong>Address:</strong> {{ details.2 }}</p> 
+
+</div>
+
+<div class='col-lg-6'>
+<div id="map-canvas"></div>
+</div>
+</div>
+{% endblock %}
+
+
+<!-- 
+/*{% for item in details %}
+		{% if forloop.first %}
+		var lat = {{ item }};
+		{% endif %}
+		{% if forloop.last %}
+		var lng = {{ item }};
+		{% endif %}
+	{% endfor %}*/
+
+	var lat={{ details.0 }}
+	var lng={{ details.1 }}
+
+	var map;
+	var latlngset = new google.maps.LatLng(lat, lng);
+	function initialize() {
+	var mapOptions = {
+	zoom: 16,
+	mapTypeId: google.maps.MapTypeId.ROADMAP
+	};
+	map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+	map.setCenter(latlngset);
+	var marker = new google.maps.Marker({
+	map: map, title: '{{ location }}', position: latlngset
+	});
+
+	var content = '<h4>' + '{{ location }}' + '</h4>' + '<p>Is located at ' + lat + ', ' + lng + '</p>' ;
+
+	var infowindow = new google.maps.InfoWindow();
+	infowindow.setContent(content);
+	google.maps.event.addListener(
+	marker,
+	'click',
+	infowindow.open(map, marker)
+	);
+	}
+	google.maps.event.addDomListener(window, 'load', initialize);
+
+ -->

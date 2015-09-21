@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block jquery %} <!-- jquery is for 'html5 geolocation' -->
+	window.onload=function(){
+	if(navigator.geolocation) <!-- This checks if the browser supports HTML5 geolocation -->
+		navigator.geolocation.getCurrentPosition(onSuccess, onError);<!-- 'navigator.geolocation.getCurrentPosition' asks the user whether he wants to disclose his location or not. If yes, then it will return an object which we are passing to the onSuccess function as 'location'. Else the onError function is called -->
+};	
+
+function onSuccess(location){
+	$lat=location.coords.latitude;
+	$lng=location.coords.longitude;
+	$loc_text= $lat + ", " + $lng;
+	console.log($loc_text);
+	$('#search_form').append("<input type='hidden' name='lat' value='" + $lat + "'>");
+	$('#search_form').append("<input type='hidden' name='lng' value='" + $lng + "'>");
+};
+
+function onError(){
+	console.log("Location not allowed");
+};
+{% endblock %}
+
+
+{% block slocation %}
+
+<form method='POST' action='' id='search_form'> {% csrf_token %}
+<div class='row'>
+	<input type='submit' value='Search' class='btn btn-success col-sm-4'>
+</div>
+</form>
+
+{% if locations %}
+<p></p>
+<ul>
+	{% for name,location_id in locations %}
+	<li><a href='location/{{ location_id }}'>{{ name }}</a></li>
+	{% endfor %}
+
+</ul>
+{% endif %}
+
+{% endblock %}
