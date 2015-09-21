@@ -3,7 +3,7 @@
 
 {% block script %}
 
-<script src="https://maps.googleapis.com/maps/api/js?v=3&key= YOUR_API_KEY&sensor=true"></script>
+<script src="https://maps.googleapis.com/maps/api/js?v=3&key= AIzaSyCMrri_BsW4wZ7dmt81SLl5gypDuo3p44c&sensor=true"></script>
 <script src="https://maps.googleapis.com/maps/api/js?v=3&sensor=false"></script>
 <script>
 	if (navigator.geolocation) { //Checks if browser supports geolocation

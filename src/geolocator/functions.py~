@@ -78,7 +78,7 @@ def foursquare_search(query):
 
 
 def foursquare_details(foursquare_id):
-	token='YOUR API KEY'
+	token='MVFLYJI31140HQCS4URDW1G5AW3DYDFBAMBIVMPWPQW3YJPI'
 	
 	url='https://api.foursquare.com/v2/venues/'+ foursquare_id +'?v=20131016&oauth_token='+token
 	obj=urllib2.urlopen(url)
