@@ -98,7 +98,7 @@ def foursquare_details(foursquare_id):
 	return details
 
 def foursquare_search_location(lat,lng):
-	token='MVFLYJI31140HQCS4URDW1G5AW3DYDFBAMBIVMPWPQW3YJPI'
+	token='Your_api_key'
 	latlng=str(lat)+'%2C'+str(lng)
 	url='https://api.foursquare.com/v2/venues/explore?oauth_token='+token+'&v=20131016&ll='+latlng+'&section=food&limit=1000&novelty=new'
 	#url='https://api.foursquare.com/v2/venues/search?oauth_token='+token+'&v=20131016&ll='+latlng+'&query=food&intent=checkin'
